@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+</head>
+<body>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js">
+    </script>
+
+    <fieldset>
+        <a href="javascript:getall()">产品列表</a>
+        <a href="javascript:getone()">获得具体的产品(Get)</a>
+        <a href="javascript:add()">新增产品</a>
+        <a href="javascript:deletes(4)">删除id为4产品</a>
+
+        <label >请输入想要删除的产品的id</label>
+        <input type="text" id="inputtt"/>
+        <button type="button"id="deleteddd">点击删除</button>
+    </fieldset>
+
+    <table id="productsss">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+
+        <tbody id="productsbody">
+
+        </tbody>
+    </table>
+
+
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //文档加载函数，先加载产品列表
+            getall();
+
+
+            $("#deleteddd").click(function () {
+                var deleteid = $("#inputtt").val();
+
+                $.ajax({
+                    url: 'api/products?id=' + deleteid,
+                    type: 'DELETE',
+                    success: function (data) {
+                        alert("删除成功");
+                    }
+                });
+
+            });
+
+
+
+        })
+
+       
+       
+
+
+        ///获取列表
+        function getall() {
+            var str = "";
+            $.getJSON("/api/products", function (products) {
+                
+
+                $.each(products, function (index, product) {
+                    str += "<tr>"
+                    str += "<td>" + products[index].Id + "</td>";
+                    str += "<td>" + products[index].Name + "</td>";
+                    str += "<td>" + products[index].Category + "</td>";
+                    str += "<td>" + products[index].Price + "</td>";
+                    str += "</tr>"
+
+                });
+                $("#productsbody").html(str);
+            });
+        }
+
+
+        ///获取某条具体的 产品信息
+        function getone() {
+            var str = "";
+            $.getJSON("/api/Products/1", function (product) {
+
+               
+
+                str += "<tr>";
+                str += "<td>" + product.Id + "</td>";
+                str += "<td>" + product.Name + "</td>";
+                str += "<td>" + product.Category + "</td>";
+                str += "<td>" + product.Price + "</td>";
+                str += "</tr>";
+
+
+                $("#productsbody").html(str);
+            });
+        }
+
+
+        ///新增产品
+        function add() {
+            ///终于看到一个正常一点的ajax了
+            $.ajax({
+                url: "api/products",
+                type: "POST",
+                data: { "Id":4,"Name": "text" , "Category": "摇滚", "Price": 9 },
+                success: function (data) {
+
+                    alert(JSON.stringify(data));
+                }
+
+            });
+        }
+
+
+        //删除
+        function deletes(id) {
+            $.ajax({
+                url: "api/products?id=" + id,
+                type: "Delete",
+                success: function (data) {
+                    debugger;
+                    alert("删除成功id为4的产品成功");
+                }
+            })
+        }
+    </script>
+</body>
+</html>

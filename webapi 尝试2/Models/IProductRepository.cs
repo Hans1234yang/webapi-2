@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace webapi_尝试2.Models
+{
+    /// <summary>
+    /// 商品仓储 接口
+    /// </summary>
+    interface IProductRepository
+    {
+        IEnumerable<Product> GetAll();
+        Product Get(int id);
+        Product Add(Product item);
+        void Remove(int id);
+        bool Update(Product item);
+    }
+}
